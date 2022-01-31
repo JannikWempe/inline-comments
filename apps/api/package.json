@@ -1,0 +1,41 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "bin": {
+    "api": "bin/api.js"
+  },
+  "scripts": {
+    "watch": "cdk watch",
+    "deploy": "cdk deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --passWithNoTests --all --updateSnapshot",
+    "test:watch": "jest --watch",
+    "cdk": "cdk",
+    "lint": "eslint --ext .ts,.tsx --fix --cache src"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
+    "aws-cdk": "2.10.0",
+    "esbuild": "^0.14.14",
+    "eslint": "^8",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~4.5.5"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-appsync-alpha": "2.10.0-alpha.0",
+    "aws-cdk-lib": "2.10.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.16"
+  }
+}
