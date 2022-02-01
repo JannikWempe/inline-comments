@@ -11,9 +11,7 @@ export class ApiStack extends Stack {
 
     const api = new appsync.GraphqlApi(this, "Api", {
       name: "Api",
-      schema: Schema.fromAsset(
-        path.join(__dirname, "graphql", "schema.graphql")
-      ),
+      schema: Schema.fromAsset(path.join(__dirname, "graphql", "schema.graphql")),
     });
 
     const demoTable = new ddb.Table(this, "DemoTable", {
