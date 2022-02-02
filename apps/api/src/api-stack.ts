@@ -8,6 +8,10 @@ export class ApiStack extends Stack {
     super(scope, id, props);
 
     const database = new AppDatabase(this, "AppDatabase");
-    new AppApi(this, "AppApi", { postsTable: database.postsTable, usersTable: database.usersTable });
+    new AppApi(this, "AppApi", {
+      postsTable: database.postsTable,
+      usersTable: database.usersTable,
+      commentsTable: database.commentsTable,
+    });
   }
 }

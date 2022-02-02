@@ -1,4 +1,3 @@
-# scalar used in AWS; otherwise codegen fails; see codegen.yml
 scalar AWSDateTime
 
 interface Node {
@@ -18,9 +17,25 @@ type Post implements Node {
   title: String!
   content: String!
   author: User!
+  comments: [Comment!]!
   firstCreated: AWSDateTime!
   lastUpdated: AWSDateTime
 }
+
+type Comment implements Node {
+  id: ID!
+  content: String!
+  post: Post!
+  author: User!
+  #  responses: [CommentResponse!]!
+  firstCreated: AWSDateTime!
+  lastUpdated: AWSDateTime
+}
+
+#type CommentResponse {
+#  content: String!
+#  author: User!
+#}
 
 type Query {
   getUsers: [User!]!
@@ -34,21 +49,29 @@ input CreateUserInput {
 }
 
 input CreatePostInput {
-    title: String!
-    content: String!
-    # TODO: would normally be cognito user doing request
-    authorId: ID!
+  title: String!
+  content: String!
+  # TODO: would normally be cognito user doing request; this way someone can create act as someone else
+  authorId: ID!
 }
 
 # TODO: could allow to partially update a Post
 input UpdatePostInput {
-    id: ID!
-    title: String!
-    content: String!
+  id: ID!
+  title: String!
+  content: String!
+}
+
+input AddCommentInput {
+  postId: ID!
+  # TODO: would normally be cognito user doing request; this way someone can create act as someone else
+  authorId: ID!
+  content: String!
 }
 
 type Mutation {
   createUser(input: CreateUserInput!): User
   createPost(input: CreatePostInput!): Post
   updatePost(input: UpdatePostInput!): Post
+  addComment(input: AddCommentInput!): Comment
 }

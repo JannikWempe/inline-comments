@@ -10,6 +10,7 @@ import { Lambda } from "./lambda";
 interface Props {
   postsTable: ddb.ITable;
   usersTable: ddb.ITable;
+  commentsTable: ddb.ITable;
 }
 
 export class AppApi extends Construct {
@@ -79,7 +80,7 @@ export class AppApi extends Construct {
       typeName: "User",
       fieldName: "posts",
       requestMappingTemplate: appsync.MappingTemplate.fromString(`
-        #if($ctx.source.postIds.size() == 0)
+        #if($util.isNullOrEmpty($ctx.source.postIds.size()))
           #return([])
         #end
 
@@ -106,11 +107,44 @@ export class AppApi extends Construct {
       ),
     });
 
+    const commentsTableSource = api.addDynamoDbDataSource("CommentsTableSource", props.commentsTable);
+    commentsTableSource.createResolver({
+      typeName: "Post",
+      fieldName: "comments",
+      requestMappingTemplate: appsync.MappingTemplate.fromString(`
+        #if($util.isNullOrEmpty($ctx.source.commentIds.size()))
+          #return([])
+        #end
+
+        #set($commentIds = [])
+        #foreach($commentId in $ctx.source.commentIds)
+          #set($map = {})
+          $util.qr($map.put("id", $util.dynamodb.toString($commentId)))
+          $util.qr($commentIds.add($map))
+        #end
+
+        {
+          "version" : "2018-05-29",
+          "operation" : "BatchGetItem",
+          "tables" : {
+             "${props.commentsTable.tableName}": {
+               "keys": $util.toJson($commentIds),
+               "consistentRead": true
+             }
+          }
+        }
+      `),
+      responseMappingTemplate: appsync.MappingTemplate.fromString(
+        `$util.toJson($ctx.result.data["${props.commentsTable.tableName}"])`
+      ),
+    });
+
     const resolverLambda = new Lambda(this, "ResolverLambda", {
       entry: path.join(__dirname, "..", "lambda", "posts.handler.ts"),
       environment: {
         POSTS_TABLE_NAME: props.postsTable.tableName,
         USERS_TABLE_NAME: props.usersTable.tableName,
+        COMMENTS_TABLE_NAME: props.commentsTable.tableName,
       },
     });
 
@@ -127,9 +161,14 @@ export class AppApi extends Construct {
       typeName: "Mutation",
       fieldName: "updatePost",
     });
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "addComment",
+    });
 
     props.usersTable.grantFullAccess(resolverLambda);
     props.postsTable.grantFullAccess(resolverLambda);
+    props.commentsTable.grantFullAccess(resolverLambda);
 
     new CfnOutput(this, "GraphQLAPIURL", {
       value: api.graphqlUrl,
