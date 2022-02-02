@@ -11,7 +11,6 @@ const devEnv = {
 
 const app = new cdk.App();
 
-new ApiStack(app, "api-stack-dev", { env: devEnv });
-// new MyStack(app, 'my-stack-prod', { env: prodEnv });
+new ApiStack(app, "ApiStack", { env: devEnv });
 
 app.synth();

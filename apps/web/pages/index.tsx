@@ -1,12 +1,13 @@
 import React from "react";
-
-import { Button } from "ui";
+import { Editor } from "ui/Editor";
 
 const Web = () => {
   return (
     <div>
       <h1>Web</h1>
-      <Button />
+      <div className="flex justify-center">
+        <Editor />
+      </div>
     </div>
   );
 };

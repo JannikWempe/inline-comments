@@ -1,0 +1,10 @@
+schema: ./src/graphql/schema.graphql
+generates:
+  ./src/lambda/types.generated.ts:
+    config:
+      skipTypename: true
+      # otherwise AWS scalars not usable
+      scalars:
+        AWSDateTime: string
+    plugins:
+      - typescript

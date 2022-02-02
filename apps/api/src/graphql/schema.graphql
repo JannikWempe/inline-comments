@@ -1,13 +1,54 @@
-type demo {
-  id: String!
-  version: String!
+# scalar used in AWS; otherwise codegen fails; see codegen.yml
+scalar AWSDateTime
+
+interface Node {
+  id: ID!
 }
+
+type User implements Node {
+  id: ID!
+  username: String!
+  posts: [Post!]!
+  firstCreated: AWSDateTime!
+  lastUpdated: AWSDateTime
+}
+
+type Post implements Node {
+  id: ID!
+  title: String!
+  content: String!
+  author: User!
+  firstCreated: AWSDateTime!
+  lastUpdated: AWSDateTime
+}
+
 type Query {
-  getDemos: [ demo! ]
+  getUsers: [User!]!
+  getUserById(userId: ID!): User
+  getPosts: [Post!]!
+  getPostById(postId: ID!): Post
 }
-input DemoInput {
-  version: String!
+
+input CreateUserInput {
+  username: String!
 }
+
+input CreatePostInput {
+    title: String!
+    content: String!
+    # TODO: would normally be cognito user doing request
+    authorId: ID!
+}
+
+# TODO: could allow to partially update a Post
+input UpdatePostInput {
+    id: ID!
+    title: String!
+    content: String!
+}
+
 type Mutation {
-  addDemo(input: DemoInput!): demo
+  createUser(input: CreateUserInput!): User
+  createPost(input: CreatePostInput!): Post
+  updatePost(input: UpdatePostInput!): Post
 }
