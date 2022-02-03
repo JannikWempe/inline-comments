@@ -1,4 +1,4 @@
-import { CfnOutput, RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy } from "aws-cdk-lib";
 import * as ddb from "aws-cdk-lib/aws-dynamodb";
 import { TableProps } from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
@@ -38,16 +38,6 @@ export class AppDatabase extends Construct {
         name: "id",
         type: ddb.AttributeType.STRING,
       },
-    });
-
-    new CfnOutput(this, "UsersTableName", {
-      value: this.usersTable.tableName,
-    });
-    new CfnOutput(this, "PostsTableName", {
-      value: this.postsTable.tableName,
-    });
-    new CfnOutput(this, "CommentsTableName", {
-      value: this.commentsTable.tableName,
     });
   }
 }

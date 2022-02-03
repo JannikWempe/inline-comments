@@ -1,7 +1,7 @@
 import path from "path";
 import * as appsync from "@aws-cdk/aws-appsync-alpha";
 import { FieldLogLevel, Schema } from "@aws-cdk/aws-appsync-alpha";
-import { CfnOutput, Duration, Expiration, RemovalPolicy } from "aws-cdk-lib";
+import { CfnOutput, Duration, Expiration, RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as ddb from "aws-cdk-lib/aws-dynamodb";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
@@ -203,11 +203,23 @@ export class AppApi extends Construct {
     props.postsTable.grantFullAccess(resolverLambda);
     props.commentsTable.grantFullAccess(resolverLambda);
 
-    new CfnOutput(this, "GraphQLAPIURL", {
+    // names taken from amplify: https://docs.amplify.aws/lib/client-configuration/configuring-amplify-categories/q/platform/js/
+    // FIXME: exportName doesn't keep the output json property stable
+    new CfnOutput(this, "AwsAppsyncGraphqlEndpoint", {
+      exportName: "AwsAppsyncGraphqlEndpoint",
       value: api.graphqlUrl,
     });
-    new CfnOutput(this, "GraphQLAPIKey", {
+    new CfnOutput(this, "AwsAppsyncApiKey", {
+      exportName: "AwsAppsyncApiKey",
       value: api.apiKey || "",
+    });
+    new CfnOutput(this, "AwsAppsyncAuthenticationType", {
+      exportName: "AwsAppsyncAuthenticationType",
+      value: "API_KEY",
+    });
+    new CfnOutput(this, "AwsAppsyncRegion", {
+      exportName: "AwsAppsyncRegion",
+      value: Stack.of(this).region,
     });
   }
 }

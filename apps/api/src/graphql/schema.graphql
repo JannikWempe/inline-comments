@@ -89,11 +89,16 @@ input DeleteCommentResponseInput {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User
-  createPost(input: CreatePostInput!): Post
-  updatePost(input: UpdatePostInput!): Post
-  addComment(input: AddCommentInput!): Comment
-  deleteComment(input: DeleteCommentInput!): ID
-  addCommentResponse(input: AddCommentResponseInput!): CommentResponse
-  deleteCommentResponse(input: DeleteCommentResponseInput!): ID
+  createUser(input: CreateUserInput!): User!
+  createPost(input: CreatePostInput!): Post!
+  updatePost(input: UpdatePostInput!): Post!
+  addComment(input: AddCommentInput!): Comment!
+  deleteComment(input: DeleteCommentInput!): ID!
+  addCommentResponse(input: AddCommentResponseInput!): CommentResponse!
+  deleteCommentResponse(input: DeleteCommentResponseInput!): ID!
+}
+
+type Subscription {
+  onPostUpdated(id: ID!): Post
+  @aws_subscribe(mutations: ["updatePost"])
 }
