@@ -1,9 +1,9 @@
 import ksuid from "ksuid";
 import { getEnvOrThrow } from "../../utils";
 import { docClient } from "../lib/ddb";
-import { CreateUserInput, User } from "../types.generated";
+import { CreateUserInput } from "../types.generated";
 
-export const createUser = async (input: CreateUserInput): Promise<User> => {
+export const createUser = async (input: CreateUserInput) => {
   const Item = {
     id: ksuid.randomSync().string,
     username: input.username,
@@ -11,14 +11,14 @@ export const createUser = async (input: CreateUserInput): Promise<User> => {
     firstCreated: new Date().toISOString(),
   };
 
-  const params = {
-    TableName: getEnvOrThrow("USERS_TABLE_NAME"),
-    Item,
-  };
   try {
-    await docClient.put(params).promise();
-    const { postIds, ...user } = Item;
-    return { ...user, posts: [] };
+    await docClient
+      .put({
+        TableName: getEnvOrThrow("USERS_TABLE_NAME"),
+        Item,
+      })
+      .promise();
+    return Item;
   } catch (err) {
     console.error(err);
     throw err;

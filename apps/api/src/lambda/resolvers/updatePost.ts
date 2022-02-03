@@ -1,8 +1,8 @@
 import { getEnvOrThrow } from "../../utils";
 import { docClient } from "../lib/ddb";
-import { Post, UpdatePostInput } from "../types.generated";
+import { UpdatePostInput } from "../types.generated";
 
-export const updatePost = async (input: UpdatePostInput): Promise<Post> => {
+export const updatePost = async (input: UpdatePostInput) => {
   try {
     const lastUpdated = new Date().toISOString();
     const postRes = await docClient
@@ -25,7 +25,7 @@ export const updatePost = async (input: UpdatePostInput): Promise<Post> => {
         ReturnValues: "ALL_NEW",
       })
       .promise();
-    return postRes.Attributes as Post;
+    return postRes.Attributes;
   } catch (err) {
     console.error(err);
     throw err;

@@ -1,22 +1,26 @@
 import ksuid from "ksuid";
 import { getEnvOrThrow } from "../../utils";
 import { docClient } from "../lib/ddb";
-import { AddCommentInput, Comment, Post, User } from "../types.generated";
+import { AddCommentInput, User } from "../types.generated";
+import { DdbPost } from "../types/ddb-post";
+import { DdbUser } from "../types/ddb-user";
 
-export const addComment = async (input: AddCommentInput): Promise<Comment> => {
+export const addComment = async (input: AddCommentInput) => {
   const Item = {
     id: ksuid.randomSync().string,
     content: input.content,
     postId: input.postId,
     authorId: input.authorId,
-    replies: [],
+    responses: [],
     firstCreated: new Date().toISOString(),
     lastUpdated: null,
   };
 
   try {
-    const [author, post] = await Promise.all([getUserById(input.authorId), getPostById(input.postId)]);
+    // just for validation
+    await Promise.all([getUserById(input.authorId), getPostById(input.postId)]);
 
+    const lastUpdated = new Date().toISOString();
     await docClient
       .transactWrite({
         TransactItems: [
@@ -32,13 +36,15 @@ export const addComment = async (input: AddCommentInput): Promise<Comment> => {
               Key: {
                 id: input.postId,
               },
-              UpdateExpression: "SET #commentIds = list_append(if_not_exists(#commentIds, :empty_list), :comment)",
+              UpdateExpression:
+                "SET #commentIds = list_append(if_not_exists(#commentIds, :empty_list), :comment), #lastUpdated = :lastUpdated",
               ExpressionAttributeNames: {
                 "#commentIds": "commentIds",
               },
               ExpressionAttributeValues: {
                 ":comment": [Item.id],
                 ":empty_list": [],
+                ":last_updated": lastUpdated,
               },
             },
           },
@@ -46,15 +52,14 @@ export const addComment = async (input: AddCommentInput): Promise<Comment> => {
       })
       .promise();
 
-    const { authorId, postId, ...createdComment } = { ...Item, author, post };
-    return createdComment;
+    return Item;
   } catch (err) {
     console.error(err);
     throw err;
   }
 };
 
-const getUserById = async (userId: string): Promise<User> => {
+const getUserById = async (userId: string): Promise<DdbUser> => {
   const res = await docClient
     .get({
       TableName: getEnvOrThrow("USERS_TABLE_NAME"),
@@ -63,14 +68,14 @@ const getUserById = async (userId: string): Promise<User> => {
       },
     })
     .promise();
-  const user = res.Item as User;
+  const user = res.Item as DdbUser;
   if (!user) {
     throw new Error(`User with id ${userId} not found.`);
   }
   return user as User;
 };
 
-const getPostById = async (postId: string): Promise<Post> => {
+const getPostById = async (postId: string): Promise<DdbPost> => {
   const res = await docClient
     .get({
       TableName: getEnvOrThrow("POSTS_TABLE_NAME"),
@@ -79,7 +84,7 @@ const getPostById = async (postId: string): Promise<Post> => {
       },
     })
     .promise();
-  const post = res.Item as Post;
+  const post = res.Item as DdbPost;
   if (!post) {
     throw new Error(`Post with id ${postId} not found.`);
   }

@@ -1,14 +1,15 @@
 import ksuid from "ksuid";
 import { getEnvOrThrow } from "../../utils";
 import { docClient } from "../lib/ddb";
-import { CreatePostInput, Post, User } from "../types.generated";
+import { CreatePostInput, User } from "../types.generated";
 
-export const createPost = async (input: CreatePostInput): Promise<Post> => {
+export const createPost = async (input: CreatePostInput) => {
   const Item = {
     id: ksuid.randomSync().string,
     title: input.title,
     content: input.content,
     authorId: input.authorId,
+    comments: [],
     firstCreated: new Date().toISOString(),
     lastUpdated: null,
   };
@@ -35,8 +36,7 @@ export const createPost = async (input: CreatePostInput): Promise<Post> => {
       })
       .promise();
 
-    const { authorId, ...createdPost } = { ...Item, author };
-    return createdPost;
+    return Item;
   } catch (err) {
     console.error(err);
     throw err;

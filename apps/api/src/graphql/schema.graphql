@@ -27,15 +27,18 @@ type Comment implements Node {
   content: String!
   post: Post!
   author: User!
-  #  responses: [CommentResponse!]!
+  responses: [CommentResponse!]!
   firstCreated: AWSDateTime!
   lastUpdated: AWSDateTime
 }
 
-#type CommentResponse {
-#  content: String!
-#  author: User!
-#}
+type CommentResponse {
+  id: ID!
+  content: String!
+  author: User!
+  firstCreated: AWSDateTime!
+  lastUpdated: AWSDateTime
+}
 
 type Query {
   getUsers: [User!]!
@@ -69,9 +72,28 @@ input AddCommentInput {
   content: String!
 }
 
+input DeleteCommentInput {
+  commentId: ID!
+  postId: ID!
+}
+
+input AddCommentResponseInput {
+  commentId: ID!
+  authorId: ID!
+  content: String!
+}
+
+input DeleteCommentResponseInput {
+  commentId: ID!
+  commentResponseId: ID!
+}
+
 type Mutation {
   createUser(input: CreateUserInput!): User
   createPost(input: CreatePostInput!): Post
   updatePost(input: UpdatePostInput!): Post
   addComment(input: AddCommentInput!): Comment
+  deleteComment(input: DeleteCommentInput!): ID
+  addCommentResponse(input: AddCommentResponseInput!): CommentResponse
+  deleteCommentResponse(input: DeleteCommentResponseInput!): ID
 }

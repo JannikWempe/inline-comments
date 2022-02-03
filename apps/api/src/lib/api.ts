@@ -54,13 +54,26 @@ export class AppApi extends Construct {
       requestMappingTemplate: appsync.MappingTemplate.dynamoDbGetItem("id", "userId"),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    usersTableSource.createResolver({
-      typeName: "Post",
-      fieldName: "author",
+    const userByAuthorIdTemplates = {
       requestMappingTemplate: appsync.MappingTemplate.fromString(
         `{"version": "2017-02-28", "operation": "GetItem", "key": {"id": $util.dynamodb.toDynamoDBJson($ctx.source.authorId)}}`
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    };
+    usersTableSource.createResolver({
+      typeName: "Post",
+      fieldName: "author",
+      ...userByAuthorIdTemplates,
+    });
+    usersTableSource.createResolver({
+      typeName: "CommentResponse",
+      fieldName: "author",
+      ...userByAuthorIdTemplates,
+    });
+    usersTableSource.createResolver({
+      typeName: "Comment",
+      fieldName: "author",
+      ...userByAuthorIdTemplates,
     });
 
     const postsTableSource = api.addDynamoDbDataSource("PostsTableSource", props.postsTable);
@@ -80,7 +93,7 @@ export class AppApi extends Construct {
       typeName: "User",
       fieldName: "posts",
       requestMappingTemplate: appsync.MappingTemplate.fromString(`
-        #if($util.isNullOrEmpty($ctx.source.postIds) || $ctx.source.postIds.size == 0)
+        #if($util.isNullOrEmpty($ctx.source.postIds) || $ctx.source.postIds.size() == 0)
           #return([])
         #end
 
@@ -106,13 +119,21 @@ export class AppApi extends Construct {
         `$util.toJson($ctx.result.data["${props.postsTable.tableName}"])`
       ),
     });
+    postsTableSource.createResolver({
+      typeName: "Comment",
+      fieldName: "post",
+      requestMappingTemplate: appsync.MappingTemplate.fromString(
+        `{"version": "2017-02-28", "operation": "GetItem", "key": {"id": $util.dynamodb.toDynamoDBJson($ctx.source.postId)}}`
+      ),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
 
     const commentsTableSource = api.addDynamoDbDataSource("CommentsTableSource", props.commentsTable);
     commentsTableSource.createResolver({
       typeName: "Post",
       fieldName: "comments",
       requestMappingTemplate: appsync.MappingTemplate.fromString(`
-        #if($util.isNullOrEmpty($ctx.source.commentIds) || $ctx.source.commentIds.size == 0)
+        #if($util.isNullOrEmpty($ctx.source.commentIds) || $ctx.source.commentIds.size() == 0)
           #return([])
         #end
 
@@ -164,6 +185,18 @@ export class AppApi extends Construct {
     lambdaDs.createResolver({
       typeName: "Mutation",
       fieldName: "addComment",
+    });
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "deleteComment",
+    });
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "addCommentResponse",
+    });
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "deleteCommentResponse",
     });
 
     props.usersTable.grantFullAccess(resolverLambda);

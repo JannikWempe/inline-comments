@@ -1,49 +1,71 @@
 import type { AppSyncResolverHandler } from "aws-lambda";
 import { isOfType } from "./lib/utilities";
 import { addComment } from "./resolvers/addComment";
+import { addCommentResponse } from "./resolvers/addCommentResponse";
 import { createPost } from "./resolvers/createPost";
 import { createUser } from "./resolvers/createUser";
 import { deleteComment } from "./resolvers/deleteComment";
+import { deleteCommentResponse } from "./resolvers/deleteCommentResponse";
 import { updatePost } from "./resolvers/updatePost";
 import {
   AddCommentInput,
-  Comment,
+  AddCommentResponseInput,
   CreatePostInput,
   CreateUserInput,
+  DeleteCommentInput,
+  DeleteCommentResponseInput,
   MutationAddCommentArgs,
   MutationCreatePostArgs,
   MutationCreateUserArgs,
+  MutationDeleteCommentArgs,
   MutationUpdatePostArgs,
-  Post,
   UpdatePostInput,
-  User,
 } from "./types.generated";
 
 const handler: AppSyncResolverHandler<
   | MutationCreateUserArgs
   | MutationCreatePostArgs
   | MutationUpdatePostArgs
-  | MutationAddCommentArgs,
-  User | Post | Comment
+  | MutationAddCommentArgs
+  | MutationDeleteCommentArgs,
+  // Don't have to return GraphQL types, resolvers will resolve ids etc.
+  // User | Post | Comment | Comment["id"]
+  any
 > = async (event) => {
   console.log(event);
+
+  const response = await createResponse(event);
+  // FIXME: replace with actual logger, e.g. ambda-powertools-logger
+  console.debug(JSON.stringify(response, null, 2));
+
+  return response;
+};
+
+const createResponse = (event: Parameters<typeof handler>[0]) => {
+  assertHasInput(event.arguments);
+
   switch (event.info.fieldName) {
     case "createUser":
-      assertHasInput(event.arguments);
-      assertIsOfType<CreateUserInput>(event.arguments.input, "username");
+      assertInputIsOfType<CreateUserInput>(event.arguments.input, "username");
       return createUser(event.arguments.input);
     case "createPost":
-      assertHasInput(event.arguments);
-      assertIsOfType<CreatePostInput>(event.arguments.input, "title", "content", "authorId");
+      assertInputIsOfType<CreatePostInput>(event.arguments.input, "title", "content", "authorId");
       return createPost(event.arguments.input);
     case "updatePost":
-      assertHasInput(event.arguments);
-      assertIsOfType<UpdatePostInput>(event.arguments.input, "id", "title", "content");
+      assertInputIsOfType<UpdatePostInput>(event.arguments.input, "id", "title", "content");
       return updatePost(event.arguments.input);
     case "addComment":
-      assertHasInput(event.arguments);
-      assertIsOfType<AddCommentInput>(event.arguments.input, "content", "postId", "authorId");
+      assertInputIsOfType<AddCommentInput>(event.arguments.input, "content", "postId", "authorId");
       return addComment(event.arguments.input);
+    case "deleteComment":
+      assertInputIsOfType<DeleteCommentInput>(event.arguments.input, "commentId", "postId");
+      return deleteComment(event.arguments.input);
+    case "addCommentResponse":
+      assertInputIsOfType<AddCommentResponseInput>(event.arguments.input, "commentId", "authorId", "content");
+      return addCommentResponse(event.arguments.input);
+    case "deleteCommentResponse":
+      assertInputIsOfType<DeleteCommentResponseInput>(event.arguments.input, "commentId", "commentResponseId");
+      return deleteCommentResponse(event.arguments.input);
     default:
       throw new Error(`Unsupported operation: ${event.info.fieldName}`);
   }
@@ -57,8 +79,11 @@ function assertHasInput(varToBeChecked: unknown): asserts varToBeChecked is { in
   }
 }
 
-function assertIsOfType<T>(varToBeChecked: unknown, ...propertiesToCheck: (keyof T)[]): asserts varToBeChecked is T {
+function assertInputIsOfType<T>(
+  varToBeChecked: unknown,
+  ...propertiesToCheck: (keyof T)[]
+): asserts varToBeChecked is T {
   if (!isOfType(varToBeChecked, ...propertiesToCheck)) {
-    throw new Error(`Expected ${varToBeChecked} to have the following properties: ${propertiesToCheck.join(", ")}.`);
+    throw new Error(`Expected input to have the following properties: ${propertiesToCheck.join(", ")}.`);
   }
 }
