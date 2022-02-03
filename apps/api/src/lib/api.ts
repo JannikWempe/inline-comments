@@ -80,7 +80,7 @@ export class AppApi extends Construct {
       typeName: "User",
       fieldName: "posts",
       requestMappingTemplate: appsync.MappingTemplate.fromString(`
-        #if($util.isNullOrEmpty($ctx.source.postIds.size()))
+        #if($util.isNullOrEmpty($ctx.source.postIds) || $ctx.source.postIds.size == 0)
           #return([])
         #end
 
@@ -112,7 +112,7 @@ export class AppApi extends Construct {
       typeName: "Post",
       fieldName: "comments",
       requestMappingTemplate: appsync.MappingTemplate.fromString(`
-        #if($util.isNullOrEmpty($ctx.source.commentIds.size()))
+        #if($util.isNullOrEmpty($ctx.source.commentIds) || $ctx.source.commentIds.size == 0)
           #return([])
         #end
 
