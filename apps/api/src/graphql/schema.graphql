@@ -58,6 +58,7 @@ input CreatePostInput {
   authorId: ID!
 }
 
+# only author can update
 # TODO: could allow to partially update a Post
 input UpdatePostInput {
   id: ID!
@@ -70,6 +71,8 @@ input AddCommentInput {
   # TODO: would normally be cognito user doing request; this way someone can create act as someone else
   authorId: ID!
   content: String!
+  # includes the highlight of the comment
+  postContent: String!
 }
 
 input DeleteCommentInput {

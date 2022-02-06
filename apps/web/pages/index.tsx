@@ -1,13 +1,20 @@
+import Link from "next/link";
 import React from "react";
-import { Editor } from "ui/Editor";
+import { usePostsQuery } from "../lib/api/api.generated";
 
 const Web = () => {
+  const query = usePostsQuery();
+
   return (
     <div>
       <h1>Web</h1>
-      <div className="flex justify-center">
-        <Editor />
-      </div>
+      {query.isSuccess &&
+        query.data.getPosts.map((post) => (
+          <Link key={post.id} href={`/${post.id}`} passHref>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a className="block">{post.title}</a>
+          </Link>
+        ))}
     </div>
   );
 };

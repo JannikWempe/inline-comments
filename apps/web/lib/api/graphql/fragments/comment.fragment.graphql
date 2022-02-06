@@ -1,0 +1,13 @@
+fragment Comment on Comment {
+  id
+  content
+  post {
+    id
+    title
+    content
+  }
+  author {
+    id
+    username
+  }
+}

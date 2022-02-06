@@ -1,0 +1,25 @@
+fragment Post on Post {
+  id
+  title
+  content
+  author {
+    id
+    username
+  }
+  comments {
+    id
+    content
+    author {
+      id
+      username
+    }
+    responses {
+      id
+      content
+      author {
+        id
+        username
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+overwrite: true
+schema: "../api/src/graphql/schema.graphql"
+documents: "./lib/api/graphql/**/*.graphql"
+generates:
+  lib/api/api.generated.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-query"
+    config:
+      fetcher: './fetcher#amplifyFetcher'
+      skipTypename: true
+      exposeFetcher: true
+      exposeQueryKeys: true

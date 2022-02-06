@@ -16,10 +16,12 @@ export const addComment = async (input: AddCommentInput) => {
     lastUpdated: null,
   };
 
+  // TODO: only allow adding <mark />; forbid changing text
+
   try {
     // just for validation
     await Promise.all([getUserById(input.authorId), getPostById(input.postId)]);
-
+    const newPostContent = assignNewCommentId(input.postContent, Item.id);
     const lastUpdated = new Date().toISOString();
     await docClient
       .transactWrite({
@@ -37,14 +39,17 @@ export const addComment = async (input: AddCommentInput) => {
                 id: input.postId,
               },
               UpdateExpression:
-                "SET #commentIds = list_append(if_not_exists(#commentIds, :empty_list), :comment), #lastUpdated = :lastUpdated",
+                "SET #content = :content, #commentIds = list_append(if_not_exists(#commentIds, :emptyList), :comment), #lastUpdated = :lastUpdated",
               ExpressionAttributeNames: {
+                "#content": "content",
                 "#commentIds": "commentIds",
+                "#lastUpdated": "lastUpdated",
               },
               ExpressionAttributeValues: {
+                ":content": newPostContent,
                 ":comment": [Item.id],
-                ":empty_list": [],
-                ":last_updated": lastUpdated,
+                ":emptyList": [],
+                ":lastUpdated": lastUpdated,
               },
             },
           },
@@ -89,4 +94,14 @@ const getPostById = async (postId: string): Promise<DdbPost> => {
     throw new Error(`Post with id ${postId} not found.`);
   }
   return post;
+};
+
+export const assignNewCommentId = (postContent: string, commentId: string) => {
+  // matches mark-tags with data-new-comment="true"
+  const newCommentMark = /<mark [^\/]*?data-new-comment="true"+?.*?>(.*?)<\/mark>/g;
+
+  const newCommentsAmount = postContent.match(newCommentMark)?.length ?? 0;
+  if (newCommentsAmount != 1) throw new Error(`Expected exactly one new comment but got ${newCommentsAmount}.`);
+
+  return postContent.replace(newCommentMark, `<mark data-comment-id="${commentId}">$1</mark>`);
 };

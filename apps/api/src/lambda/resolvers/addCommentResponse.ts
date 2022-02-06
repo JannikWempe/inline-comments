@@ -21,14 +21,14 @@ export const addCommentResponse = async (input: AddCommentResponseInput) => {
           id: input.commentId,
         },
         UpdateExpression:
-          "SET #responses = list_append(if_not_exists(#responses, :empty_list), :response), #lastUpdated = :lastUpdated",
+          "SET #responses = list_append(if_not_exists(#responses, :emptyList), :response), #lastUpdated = :lastUpdated",
         ExpressionAttributeNames: {
           "#responses": "responses",
           "#lastUpdated": "lastUpdated",
         },
         ExpressionAttributeValues: {
           ":response": [Item],
-          ":empty_list": [],
+          ":emptyList": [],
           ":lastUpdated": lastUpdated,
         },
         ReturnValues: "ALL_NEW",

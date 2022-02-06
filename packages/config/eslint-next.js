@@ -36,6 +36,7 @@ module.exports = {
         namedComponents: 'arrow-function',
       },
     ],
+    'react/require-default-props': 'off',
 
     // next
     '@next/next/no-html-link-for-pages': 'off',

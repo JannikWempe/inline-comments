@@ -1,0 +1,382 @@
+{
+  "props": {
+    "pageProps": {
+      "user": {
+        "socialMedia": {
+          "website": "https://www.jannikwempe.com/",
+          "github": "https://github.com/JannikWempe",
+          "twitter": "https://twitter.com/JannikWempe",
+          "facebook": "",
+          "stackoverflow": "https://stackoverflow.com/users/5389871/jannikwempe",
+          "linkedin": "https://www.linkedin.com/in/jannik-wempe/"
+        },
+        "emailPreferences": {
+          "hnWeekly": true,
+          "activityNotifications": true,
+          "hashnodeUpdates": true,
+          "generalAnnouncements": false,
+          "amaUpdates": true,
+          "directQuestionNotifications": true,
+          "bookmarkReminderNotifications": true,
+          "monthlyBlogStats": true,
+          "personalizedNewsletter": false
+        },
+        "pushNotificationPreferences": {
+          "postComment": true,
+          "postWatch": true,
+          "commentReply": true,
+          "weeklyDigest": true,
+          "userUpvote": true,
+          "pollEnd": true,
+          "ama": true,
+          "mentions": true,
+          "dndActive": false
+        },
+        "location": "Hamburg, Germany",
+        "isBanned": false,
+        "iSB": false,
+        "accountOnHold": false,
+        "isDeactivated": false,
+        "upvotedAMAs": [],
+        "upvotedAMAQuestions": [],
+        "upvotedAMAResponses": [],
+        "numFollowers": 40,
+        "numFollowing": 7,
+        "mentorOf": [],
+        "pendingMentorOf": [],
+        "subscribedAMAs": [],
+        "isChangelogUnsubscribed": false,
+        "bookmarkReminderFrequency": "weekly",
+        "totalUpvotesReceived": 0,
+        "collectionsFollowing": [],
+        "pinnedNodes": [],
+        "unreadNotifications": 0,
+        "unreadComments": 0,
+        "unreadReactions": 0,
+        "unreadMentions": 0,
+        "unreadNewPosts": 0,
+        "showWelcomeCard": true,
+        "isDevmagUser": false,
+        "showStoryInterstitial": true,
+        "upvotedFeatureRequests": [],
+        "managerOf": [],
+        "tagManagerOf": [],
+        "blacklistedWidgets": [],
+        "focus": [
+          {
+            "_id": "56744723958ef13879b95434",
+            "name": "React",
+            "slug": "reactjs",
+            "isApproved": true,
+            "id": "56744723958ef13879b95434"
+          },
+          {
+            "_id": "583d0951f533d193a2e694d1",
+            "name": "Svelte",
+            "slug": "svelte",
+            "isApproved": true,
+            "id": "583d0951f533d193a2e694d1"
+          },
+          {
+            "_id": "56744721958ef13879b94bc5",
+            "name": "AWS",
+            "slug": "aws",
+            "isApproved": true,
+            "id": "56744721958ef13879b94bc5"
+          },
+          {
+            "_id": "56744723958ef13879b954e0",
+            "name": "TypeScript",
+            "slug": "typescript",
+            "isApproved": true,
+            "id": "56744723958ef13879b954e0"
+          },
+          {
+            "_id": "56744721958ef13879b94cad",
+            "name": "JavaScript",
+            "slug": "javascript",
+            "isApproved": true,
+            "id": "56744721958ef13879b94cad"
+          },
+          {
+            "_id": "56744721958ef13879b94d67",
+            "name": "Python",
+            "slug": "python",
+            "isApproved": true,
+            "id": "56744721958ef13879b94d67"
+          },
+          {
+            "_id": "56744721958ef13879b94b77",
+            "name": "Docker",
+            "slug": "docker",
+            "isApproved": true,
+            "id": "56744721958ef13879b94b77"
+          }
+        ],
+        "isEvangelist": false,
+        "hasSeenMessages": false,
+        "isTeamConversationSet": false,
+        "notifyAboutLaunch": false,
+        "isAmbassador": true,
+        "hasGoldRing": true,
+        "referralCount": 4,
+        "_id": "608417f2ff5fc65284a799f6",
+        "name": "Jannik Wempe",
+        "username": "JannikWempe",
+        "email": "hi@jannikwempe.com",
+        "tagline": "Serverless and Frontend Enthusiast",
+        "photo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1619269619022/pBj2s3hY4.jpeg",
+        "pendingManagerOf": [],
+        "dateJoined": "2021-04-24T13:06:58.521Z",
+        "appreciations": [],
+        "badgesAwarded": [],
+        "blogHandle": "jannikwempe",
+        "publicationDomain": "blog.jannikwempe.com",
+        "publicationEnabled": true,
+        "onboardingDone": true,
+        "numPosts": 14,
+        "numReactions": 647,
+        "numResponses": 13,
+        "timeZone": "Europe/Berlin",
+        "isEligibleFor2021EoyReview": true,
+        "signature": "d2a50747bb85ad8719b0961c48f20dcaadda804f5c8856545e51c6588900cb63",
+        "nodesFollowing": [
+          {
+            "_id": "56744721958ef13879b94bc5",
+            "name": "AWS",
+            "slug": "aws",
+            "logo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1607508501076/CYQAUOwqq.png",
+            "isActive": true,
+            "lastLinkStamp": "2019-05-15T06:00:43.014Z",
+            "lastStoryStamp": "2018-03-31T12:16:21.220Z",
+            "bookmarked": false,
+            "id": "56744721958ef13879b94bc5"
+          },
+          {
+            "_id": "56744721958ef13879b94c7e",
+            "name": "General Programming",
+            "slug": "programming",
+            "logo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1535648192079/H1daWiBvQ.png",
+            "isActive": true,
+            "lastLinkStamp": "2019-05-01T10:37:00.918Z",
+            "lastStoryStamp": "2018-05-27T11:13:57.806Z",
+            "bookmarked": false,
+            "id": "56744721958ef13879b94c7e"
+          },
+          {
+            "_id": "56744721958ef13879b94cad",
+            "name": "JavaScript",
+            "slug": "javascript",
+            "logo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1607082785538/EryuLRriM.png",
+            "isActive": true,
+            "lastLinkStamp": "2019-05-17T13:59:12.574Z",
+            "lastStoryStamp": "2018-06-06T14:21:20.465Z",
+            "bookmarked": false,
+            "id": "56744721958ef13879b94cad"
+          },
+          {
+            "_id": "56744722958ef13879b94e89",
+            "name": "Design",
+            "slug": "design",
+            "logo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1513324674454/r1qtxW-zf.png",
+            "isActive": true,
+            "lastLinkStamp": "2019-05-02T07:14:07.755Z",
+            "lastStoryStamp": "2018-04-17T13:15:35.550Z",
+            "bookmarked": false,
+            "id": "56744722958ef13879b94e89"
+          },
+          {
+            "_id": "56744722958ef13879b950e4",
+            "name": "Vue.js",
+            "slug": "vuejs",
+            "logo": "https://res.cloudinary.com/hashnode/image/upload/v1505294440/t5igqu22z1s86xa7nkqi.png",
+            "isActive": true,
+            "lastLinkStamp": "2019-05-07T14:12:13.049Z",
+            "bookmarked": false,
+            "id": "56744722958ef13879b950e4"
+          },
+          {
+            "_id": "56744723958ef13879b952d7",
+            "name": "Developer",
+            "slug": "developer",
+            "isActive": true,
+            "lastStoryStamp": "2017-10-05T11:44:17.138Z",
+            "lastLinkStamp": "2018-12-07T11:23:07.453Z",
+            "logo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1554321431158/MqVqSHr8Q.jpeg",
+            "bookmarked": false,
+            "id": "56744723958ef13879b952d7"
+          },
+          {
+            "_id": "56744723958ef13879b95434",
+            "name": "React",
+            "slug": "reactjs",
+            "logo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1513321478077/ByCWNxZMf.png",
+            "isActive": true,
+            "lastLinkStamp": "2019-05-13T14:43:20.852Z",
+            "lastStoryStamp": "2018-03-19T10:12:55.734Z",
+            "bookmarked": false,
+            "id": "56744723958ef13879b95434"
+          },
+          {
+            "_id": "607e6751eb2bd30d2d22a556",
+            "name": "Testing Library",
+            "logo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1618896704282/9Z3cbqhmn.png",
+            "slug": "testing-library",
+            "isActive": true,
+            "bookmarked": false,
+            "id": "607e6751eb2bd30d2d22a556"
+          }
+        ],
+        "postsFollowing": [],
+        "totalAppreciationBadges": 0,
+        "id": "608417f2ff5fc65284a799f6"
+      },
+      "statusCode": 200,
+      "author": {
+        "_id": "608417f2ff5fc65284a799f6",
+        "socialMedia": {
+          "twitter": "https://twitter.com/JannikWempe",
+          "github": "https://github.com/JannikWempe",
+          "stackoverflow": "https://stackoverflow.com/users/5389871/jannikwempe",
+          "facebook": "",
+          "website": "https://www.jannikwempe.com/",
+          "linkedin": "https://www.linkedin.com/in/jannik-wempe/"
+        },
+        "name": "Jannik Wempe",
+        "username": "JannikWempe",
+        "photo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1619269619022/pBj2s3hY4.jpeg"
+      },
+      "draftId": "61f8e1fb3032880f892fa2c3",
+      "draftResponses": [
+        {
+          "popularity": 0,
+          "isActive": true,
+          "upvotedBy": [],
+          "downvotedBy": [],
+          "upvotes": 0,
+          "downvotes": 0,
+          "isCollapsed": false,
+          "totalBadgesAwarded": 0,
+          "isRewardWinner": false,
+          "bookmarkedIn": [],
+          "score": 0,
+          "reactions": [],
+          "totalReactions": 0,
+          "reactionsByCurrentUser": [],
+          "_id": "61f97538e0502911a6f1093c",
+          "content": "<p>This is a comment</p>\n",
+          "contentMarkdown": "This is a comment",
+          "author": {
+            "socialMedia": {
+              "website": "https://www.jannikwempe.com/",
+              "github": "https://github.com/JannikWempe",
+              "twitter": "https://twitter.com/JannikWempe",
+              "facebook": "",
+              "stackoverflow": "https://stackoverflow.com/users/5389871/jannikwempe",
+              "linkedin": "https://www.linkedin.com/in/jannik-wempe/"
+            },
+            "location": "Hamburg, Germany",
+            "isDeactivated": false,
+            "numFollowers": 40,
+            "numFollowing": 7,
+            "storiesCreated": [],
+            "totalUpvotesReceived": 0,
+            "isEvangelist": false,
+            "_id": "608417f2ff5fc65284a799f6",
+            "name": "Jannik Wempe",
+            "username": "JannikWempe",
+            "tagline": "Serverless and Frontend Enthusiast",
+            "photo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1619269619022/pBj2s3hY4.jpeg",
+            "dateJoined": "2021-04-24T13:06:58.521Z",
+            "appreciations": [],
+            "badgesAwarded": [],
+            "totalAppreciationBadges": 0,
+            "id": "608417f2ff5fc65284a799f6"
+          },
+          "stamp": "ckz4ff1uc08ajhis1fdk8ep76",
+          "draft": "61f8e1fb3032880f892fa2c3",
+          "replies": [
+            {
+              "isActive": true,
+              "upvotes": 0,
+              "reactions": [],
+              "totalReactions": 0,
+              "reactionsByCurrentUser": [],
+              "dateAdded": "2022-02-01T18:00:34.344Z",
+              "_id": "61f9754243e34d11816951fd",
+              "content": "<p>This is a reply</p>\n",
+              "contentMarkdown": "This is a reply",
+              "author": {
+                "socialMedia": {
+                  "website": "https://www.jannikwempe.com/",
+                  "github": "https://github.com/JannikWempe",
+                  "twitter": "https://twitter.com/JannikWempe",
+                  "facebook": "",
+                  "stackoverflow": "https://stackoverflow.com/users/5389871/jannikwempe",
+                  "linkedin": "https://www.linkedin.com/in/jannik-wempe/"
+                },
+                "location": "Hamburg, Germany",
+                "isDeactivated": false,
+                "numFollowers": 40,
+                "numFollowing": 7,
+                "storiesCreated": [],
+                "totalUpvotesReceived": 0,
+                "isEvangelist": false,
+                "_id": "608417f2ff5fc65284a799f6",
+                "name": "Jannik Wempe",
+                "username": "JannikWempe",
+                "tagline": "Serverless and Frontend Enthusiast",
+                "photo": "https://cdn.hashnode.com/res/hashnode/image/upload/v1619269619022/pBj2s3hY4.jpeg",
+                "dateJoined": "2021-04-24T13:06:58.521Z",
+                "appreciations": [],
+                "badgesAwarded": [],
+                "totalAppreciationBadges": 0,
+                "id": "608417f2ff5fc65284a799f6"
+              },
+              "stamp": "ckz4ff95z08jqghs1by9590xb",
+              "reactionToCountMap": {
+                "any": 1
+              },
+              "uniqueReactions": [],
+              "reactionToCountMapUnique": {
+                "reaction_5c090d96c2a9c2a674d35484": 0
+              },
+              "id": "61f9754243e34d11816951fd"
+            }
+          ],
+          "dateAdded": "2022-02-01T18:00:24.853Z",
+          "badgesAwarded": [],
+          "__v": 1,
+          "reactionToCountMap": {
+            "any": 1
+          },
+          "uniqueReactions": [],
+          "reactionToCountMapUnique": {
+            "reaction_5c090d96c2a9c2a674d35484": 0
+          },
+          "id": "61f97538e0502911a6f1093c"
+        }
+      ],
+      "router": {
+        "route": "/PreviewDraft",
+        "pathname": "/PreviewDraft",
+        "query": {
+          "id": "61f8e1fb3032880f892fa2c3"
+        },
+        "asPath": "/preview/61f8e1fb3032880f892fa2c3",
+        "basePath": "",
+        "isFallback": false
+      }
+    }
+  },
+  "page": "/PreviewDraft",
+  "query": {
+    "id": "61f8e1fb3032880f892fa2c3"
+  },
+  "buildId": "OlfwVr0jtUtJ8L9APiCvX",
+  "assetPrefix": "https://hashnode.com",
+  "isFallback": false,
+  "customServer": true,
+  "gip": true,
+  "appGip": true
+}

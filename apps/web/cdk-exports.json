@@ -1,0 +1,8 @@
+{
+  "ApiStack": {
+    "AppApiAwsAppsyncRegionCF761689": "eu-central-1",
+    "AppApiAwsAppsyncGraphqlEndpointDE5D3381": "https://x2t2irrkejbtxe7nvqdj7m7ccq.appsync-api.eu-central-1.amazonaws.com/graphql",
+    "AppApiAwsAppsyncAuthenticationType8EA983C5": "API_KEY",
+    "AppApiAwsAppsyncApiKey83F37EC8": "da2-yhozmrpuknh7blrzgmupe5dcq4"
+  }
+}
