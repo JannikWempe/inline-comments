@@ -4,6 +4,6 @@
 
 @layer utilities {
   .highlight-comments mark[data-comment-id] {
-    background-color: rgba(255, 0, 0, 0.2);
+    @apply bg-red-500/20
   }
 }

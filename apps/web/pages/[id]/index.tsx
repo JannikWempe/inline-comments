@@ -2,9 +2,12 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { useRouter } from "next/router";
+import { Comments } from "components/Comments";
+import { Spinner } from "ui";
 import { usePostQuery } from "../../lib/api/api.generated";
 import { Annotator } from "../../components/Annotator";
 import { Editor } from "../../components/Editor";
+import { CommentsProvider } from "../../hooks/use-post";
 
 type Props = {
   id: string;
@@ -16,19 +19,22 @@ const Post = ({ id }: Props) => {
 
   const editorMode = router.query.mode === "edit" ? "edit" : "review";
 
-  return (
-    <main className="mt-5 flex flex-col items-center">
-      <h2 className="text-lg">
-        Mode: <strong>{editorMode}</strong>
-      </h2>
-      {query.isSuccess && query?.data?.getPostById && editorMode === "edit" && (
-        <Editor post={query.data.getPostById} className="w-2/3 mt-16" />
-      )}
+  if (query.isLoading) return <Spinner />;
 
-      {query.isSuccess && query?.data?.getPostById && editorMode === "review" && (
-        <Annotator post={query.data.getPostById} className="w-2/3 mt-16" />
-      )}
-    </main>
+  return (
+    <CommentsProvider postId={id}>
+      <div className="mt-5 mx-20 grid grid-cols-12 gap-x-5">
+        <main className="col-span-8 flex flex-col items-center">
+          <h2 className="text-lg">
+            Mode: <strong>{editorMode}</strong>
+          </h2>
+          {query.isSuccess && editorMode === "edit" && <Editor post={query.data.getPostById} className="mt-16" />}
+
+          {query.isSuccess && editorMode === "review" && <Annotator post={query.data.getPostById} className="mt-16" />}
+        </main>
+        <aside className="col-span-4">{query.isSuccess && <Comments />}</aside>
+      </div>
+    </CommentsProvider>
   );
 };
 

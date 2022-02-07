@@ -1,9 +1,10 @@
 import React, { ReactElement, useRef, useState } from "react";
 import { AnnotationIcon } from "ui/AnnotationIcon";
 import { useClickAway } from "react-use";
-import { PostFragment, useAddCommentMutation } from "../lib/api/api.generated";
+import { useQueryClient } from "react-query";
+import { PostFragment, useAddCommentMutation, usePostQuery } from "../lib/api/api.generated";
 import { useDisclosure } from "../hooks/use-disclosure";
-import { Comment } from "./Comment";
+import { NewComment } from "./NewComment";
 
 type Point = {
   x: number;
@@ -25,16 +26,18 @@ const getRange = () => {
 export const Annotator = ({ post, className }: Props): ReactElement => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [menuPosition, setMenuPosition] = useState<Point | null>(null);
-
   const contentRef = useRef<HTMLPreElement>(null);
+
   const rangeRef = useRef<Range | null>(null);
   const createdComment = useRef<HTMLElement | null>(null);
 
+  const queryClient = useQueryClient();
   const addCommentMutation = useAddCommentMutation({
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       contentRef.current.innerHTML = data.addComment.post.content;
       createdComment.current = null;
       onClose();
+      await queryClient.invalidateQueries(usePostQuery.getKey({ id: post.id }));
     },
   });
 
@@ -75,8 +78,10 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     createdComment.current = highlight;
     try {
       rangeRef.current.surroundContents(highlight);
-      // setContent(ref.current.innerHTML);
     } catch (e) {
+      // fails in case of partial overlap, e.g. <mark1>some <mark2>text</mark1> text</mark2>
+      // TODO: handle this case gracefully; e.g. merge comments?
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   };
@@ -120,7 +125,7 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
         ref={contentRef}
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
-      <Comment isOpen={isOpen} onSave={handleSaveComment} onCancel={handleCancelCommenting} />
+      <NewComment isOpen={isOpen} onSave={handleSaveComment} onCancel={handleCancelCommenting} />
       <button
         type="button"
         className={`${menuPosition ? `block absolute p-2 bg-gray-500 text-white` : "hidden"}`}
