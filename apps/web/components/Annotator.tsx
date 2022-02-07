@@ -29,13 +29,13 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
   const contentRef = useRef<HTMLPreElement>(null);
 
   const rangeRef = useRef<Range | null>(null);
-  const createdComment = useRef<HTMLElement | null>(null);
+  const createdHighlight = useRef<HTMLElement | null>(null);
 
   const queryClient = useQueryClient();
   const addCommentMutation = useAddCommentMutation({
     onSuccess: async (data) => {
       contentRef.current.innerHTML = data.addComment.post.content;
-      createdComment.current = null;
+      createdHighlight.current = null;
       onClose();
       await queryClient.invalidateQueries(usePostQuery.getKey({ id: post.id }));
     },
@@ -75,7 +75,7 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     highlight.dataset.newComment = "true";
     highlight.classList.add("bg-blue-500/50");
     onOpen();
-    createdComment.current = highlight;
+    createdHighlight.current = highlight;
     try {
       rangeRef.current.surroundContents(highlight);
     } catch (e) {
@@ -97,7 +97,7 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
   };
 
   const handleSaveComment = (newComment: string) => {
-    if (!createdComment.current) return;
+    if (!createdHighlight.current) return;
     if (!contentRef.current) return;
 
     addCommentMutation.mutate({
