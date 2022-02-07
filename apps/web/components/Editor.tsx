@@ -71,7 +71,7 @@ export const Editor = ({ post, className }: Props): ReactElement => {
       />
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <pre
-        className="highlight-comments p-2 whitespace-pre-wrap rounded-lg border-solid border-2 border-gray-100 selection:bg-blue-500/20"
+        className="highlight-comments w-full p-2 whitespace-pre-wrap rounded-lg border-solid border-2 border-gray-100 selection:bg-blue-500/20"
         contentEditable
         onInput={(e) => {
           setContent(e.currentTarget.innerHTML);

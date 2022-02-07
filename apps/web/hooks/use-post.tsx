@@ -6,6 +6,8 @@ type Context = {
   query: UseQueryResult<PostQuery>;
   selectedComment: CommentFragment | null;
   setSelectedComment: (comment: CommentFragment | null) => void;
+  isAddingNewComment: boolean;
+  setIsAddingNewComment: (isAddingNewComment: boolean) => void;
 };
 
 const CommentsContext = createContext<Partial<Context>>({});
@@ -18,17 +20,21 @@ type Props = {
 export const CommentsProvider = ({ postId, children }: Props) => {
   const query = usePostQuery({ id: postId });
   const [selectedComment, setSelectedComment] = useState(null);
+  const [isAddingNewComment, setIsAddingNewComment] = useState(false);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <CommentsContext.Provider value={{ query, selectedComment, setSelectedComment }}>
+    <CommentsContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
+      value={{ query, selectedComment, setSelectedComment, isAddingNewComment, setIsAddingNewComment }}
+    >
       {children}
     </CommentsContext.Provider>
   );
 };
 
 export const usePost = () => {
-  const { query, selectedComment, setSelectedComment } = useContext(CommentsContext);
+  const { query, selectedComment, setSelectedComment, isAddingNewComment, setIsAddingNewComment } =
+    useContext(CommentsContext);
 
   /** Comments that (still) exist in the post content in order of their occurrence. */
   const comments = useMemo(
@@ -50,5 +56,5 @@ export const usePost = () => {
     setSelectedComment(query.data.getPostById.comments.find((comment) => comment.id === commentId) || null);
   };
 
-  return { query, comments, selectedComment, selectComment };
+  return { query, comments, selectedComment, selectComment, isAddingNewComment, setIsAddingNewComment };
 };

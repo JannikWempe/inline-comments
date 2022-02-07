@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import { CommentFragment } from "../lib/api/api.generated";
+import { dateTimeFormat } from "../lib/date";
 
 type Props = {
   comment: CommentFragment;
@@ -7,16 +8,6 @@ type Props = {
   selectComment: () => void;
   deselectComment: () => void;
 };
-
-const dateTimeFormat = Intl.DateTimeFormat("en-US", {
-  year: "2-digit",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  hour12: false,
-});
 
 export const Comment = ({ comment, isSelected, selectComment, deselectComment }: Props): ReactElement => {
   const date = dateTimeFormat.format(new Date(comment.firstCreated));
@@ -31,7 +22,6 @@ export const Comment = ({ comment, isSelected, selectComment, deselectComment }:
       <p className="font-semibold text-md">{comment.author.username}</p>
       <p className="text-xs text-gray-500">{date}</p>
       <p className="mt-2">{comment.content}</p>
-      <p>{comment.id}</p>
     </article>
   );
 };

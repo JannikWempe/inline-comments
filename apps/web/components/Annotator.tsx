@@ -5,6 +5,7 @@ import { useQueryClient } from "react-query";
 import { PostFragment, useAddCommentMutation, usePostQuery } from "../lib/api/api.generated";
 import { useDisclosure } from "../hooks/use-disclosure";
 import { NewComment } from "./NewComment";
+import { usePost } from "../hooks/use-post";
 
 type Point = {
   x: number;
@@ -25,6 +26,7 @@ const getRange = () => {
 
 export const Annotator = ({ post, className }: Props): ReactElement => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { setIsAddingNewComment } = usePost();
   const [menuPosition, setMenuPosition] = useState<Point | null>(null);
   const contentRef = useRef<HTMLPreElement>(null);
 
@@ -36,6 +38,7 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     onSuccess: async (data) => {
       contentRef.current.innerHTML = data.addComment.post.content;
       createdHighlight.current = null;
+      setIsAddingNewComment(false);
       onClose();
       await queryClient.invalidateQueries(usePostQuery.getKey({ id: post.id }));
     },
@@ -63,8 +66,8 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     const buttonHeight = 20;
     const lineHeight = 15;
     setMenuPosition({
-      x: rect.x + rect.width / 2 - buttonWidth,
-      y: rect.y - 2 * buttonHeight - lineHeight,
+      x: rect.x + rect.width / 2 - buttonWidth - 80,
+      y: rect.y - 2 * buttonHeight - lineHeight - 17,
     });
   };
 
@@ -75,6 +78,7 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     highlight.dataset.newComment = "true";
     highlight.classList.add("bg-blue-500/50");
     createdHighlight.current = highlight;
+    setIsAddingNewComment(true);
     onOpen();
     try {
       rangeRef.current.surroundContents(highlight);
@@ -94,6 +98,7 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
   const handleCancelCommenting = () => {
     onClose();
     resetContent();
+    setIsAddingNewComment(false);
   };
 
   const handleSaveComment = (newComment: string) => {
@@ -120,12 +125,17 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
       />
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <pre
-        className="highlight-comments p-2 whitespace-pre-wrap rounded-lg border-solid border-2 border-gray-100 selection:bg-blue-500/20"
+        className="highlight-comments relative w-full p-2 whitespace-pre-wrap rounded-lg border-solid border-2 border-gray-100 selection:bg-blue-500/20"
         onMouseUp={handleMouseUp}
         ref={contentRef}
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
-      <NewComment isOpen={isOpen} onSave={handleSaveComment} onCancel={handleCancelCommenting} />
+      <NewComment
+        isOpen={isOpen}
+        onSave={handleSaveComment}
+        onCancel={handleCancelCommenting}
+        className="absolute right-0 w-[30vw]"
+      />
       <button
         type="button"
         className={`${menuPosition ? `block absolute p-2 bg-gray-500 text-white` : "hidden"}`}
