@@ -74,8 +74,8 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     const highlight = document.createElement("mark");
     highlight.dataset.newComment = "true";
     highlight.classList.add("bg-blue-500/50");
-    onOpen();
     createdHighlight.current = highlight;
+    onOpen();
     try {
       rangeRef.current.surroundContents(highlight);
     } catch (e) {
