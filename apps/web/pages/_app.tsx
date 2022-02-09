@@ -6,8 +6,12 @@ import type { AppProps } from "next/app";
 import Amplify from "aws-amplify";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-
+import { startMockServiceWorker } from "api-mock";
 import cdkExports from "../cdk-exports.json";
+
+if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
+  startMockServiceWorker();
+}
 
 Amplify.configure({
   aws_project_region: cdkExports.ApiStack.AppApiAwsAppsyncRegionCF761689,

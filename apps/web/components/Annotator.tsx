@@ -1,11 +1,11 @@
 import React, { ReactElement, useRef, useState } from "react";
 import { AnnotationIcon } from "ui/AnnotationIcon";
 import { useClickAway } from "react-use";
-import { useQueryClient } from "react-query";
-import { PostFragment, useAddCommentMutation, usePostQuery } from "../lib/api/api.generated";
+import { PostFragment } from "../lib/api/api.generated";
 import { useDisclosure } from "../hooks/use-disclosure";
 import { NewComment } from "./NewComment";
 import { usePost } from "../hooks/use-post";
+import { useApplyCommentMarkerConnection } from "../hooks/use-apply-comment-marker-connection";
 
 type Point = {
   x: number;
@@ -20,11 +20,12 @@ type Props = {
 const getRange = () => {
   if (!window) return undefined;
   const selection = window.getSelection();
-  if (!selection) return undefined;
+  if (!selection || selection.rangeCount === 0) return undefined;
   return selection.getRangeAt(0);
 };
 
 export const Annotator = ({ post, className }: Props): ReactElement => {
+  useApplyCommentMarkerConnection();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { setIsAddingNewComment } = usePost();
   const [menuPosition, setMenuPosition] = useState<Point | null>(null);
@@ -32,17 +33,6 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
 
   const rangeRef = useRef<Range | null>(null);
   const createdHighlight = useRef<HTMLElement | null>(null);
-
-  const queryClient = useQueryClient();
-  const addCommentMutation = useAddCommentMutation({
-    onSuccess: async (data) => {
-      contentRef.current.innerHTML = data.addComment.post.content;
-      createdHighlight.current = null;
-      setIsAddingNewComment(false);
-      onClose();
-      await queryClient.invalidateQueries(usePostQuery.getKey({ id: post.id }));
-    },
-  });
 
   useClickAway(contentRef, () => {
     // otherwise button is hidden before event is triggered
@@ -101,18 +91,11 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     setIsAddingNewComment(false);
   };
 
-  const handleSaveComment = (newComment: string) => {
-    if (!createdHighlight.current) return;
-    if (!contentRef.current) return;
-
-    addCommentMutation.mutate({
-      input: {
-        postId: "24XoHqTWe6dG9tleycdjacOAis2",
-        authorId: "24XoFTnzIcPSibhQjWvsziTw2Hh",
-        content: newComment,
-        postContent: contentRef.current.innerHTML,
-      },
-    });
+  const onDoneCommenting = () => {
+    // contentRef.current.innerHTML = data.addComment.post.content;
+    createdHighlight.current = null;
+    setIsAddingNewComment(false);
+    onClose();
   };
 
   return (
@@ -129,15 +112,19 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
         onMouseUp={handleMouseUp}
         ref={contentRef}
         dangerouslySetInnerHTML={{ __html: post.content }}
+        data-testid="annotator-content"
       />
       <NewComment
+        postId={post.id}
+        postContent={contentRef.current?.innerHTML ?? ""}
         isOpen={isOpen}
-        onSave={handleSaveComment}
+        onDone={onDoneCommenting}
         onCancel={handleCancelCommenting}
         className="absolute right-0 w-[30vw]"
       />
       <button
         type="button"
+        aria-label="Add comment"
         className={`${menuPosition ? `block absolute p-2 bg-gray-500 text-white` : "hidden"}`}
         style={{
           top: menuPosition ? menuPosition.y : undefined,

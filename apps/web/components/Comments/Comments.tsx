@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { Comment } from "./Comment";
-import { usePost } from "../hooks/use-post";
+import { usePost } from "../../hooks/use-post";
 
 export const Comments = (): ReactElement => {
   const { comments, selectedComment, selectComment, isAddingNewComment } = usePost();

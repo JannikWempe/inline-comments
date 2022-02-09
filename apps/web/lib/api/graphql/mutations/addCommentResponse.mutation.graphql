@@ -1,0 +1,5 @@
+mutation AddCommentResponse($input: AddCommentResponseInput!) {
+    addCommentResponse(input: $input) {
+     ...CommentResponse
+  }
+}

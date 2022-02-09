@@ -1,0 +1,11 @@
+{
+  "compileOnSave": false,
+  "exclude": ["node_modules", "tmp"],
+  "compilerOptions": {
+    "sourceMap": false,
+    "outDir": "./out-tsc",
+    "allowJs": true,
+    "types": ["cypress", "node", "@testing-library/cypress", "cypress-real-events", "cypress-network-idle"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.js"]
+}

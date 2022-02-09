@@ -7,16 +7,10 @@ fragment Comment on Comment {
     content
   }
   author {
-    id
-    username
+    ...Author
   }
   responses {
-    id
-    content
-    author {
-      id
-      username
-    }
+    ...CommentResponse
   }
   firstCreated
   lastUpdated

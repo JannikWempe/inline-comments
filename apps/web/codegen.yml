@@ -7,8 +7,12 @@ generates:
       - "typescript"
       - "typescript-operations"
       - "typescript-react-query"
+      - add:
+          content: "/* eslint-disable */"
+      - add:
+          content: "// @ts-nocheck"
     config:
-      fetcher: './fetcher#amplifyFetcher'
+      fetcher: "./fetcher#amplifyFetcher"
       skipTypename: true
       exposeFetcher: true
       exposeQueryKeys: true

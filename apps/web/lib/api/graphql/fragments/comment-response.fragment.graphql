@@ -1,0 +1,9 @@
+fragment CommentResponse on CommentResponse {
+  id
+  content
+  author {
+    ...Author
+  }
+  firstCreated
+  lastUpdated
+}

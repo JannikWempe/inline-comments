@@ -1,22 +1,18 @@
 import type { ReactElement } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDebounce } from "react-use";
-import { CommentFragment, PostFragment, useUpdatePostMutation } from "../lib/api/api.generated";
-import { usePost } from "../hooks/use-post";
+import { PostFragment, useUpdatePostMutation } from "../lib/api/api.generated";
+import { useApplyCommentMarkerConnection } from "../hooks/use-apply-comment-marker-connection";
 
 type Props = {
   post: PostFragment;
   className?: string;
 };
 
-const getAllCommentEls = (): NodeListOf<Element> | null => document.querySelectorAll(`pre > mark[data-comment-id]`);
-const getSelectedCommentEl = (selectedCommentId: CommentFragment["id"]): Element | null =>
-  document.querySelector(`pre > mark[data-comment-id="${selectedCommentId}"]`);
-
 export const Editor = ({ post, className }: Props): ReactElement => {
-  const { selectComment, selectedComment } = usePost();
   const [title, setTitle] = useState(() => post.title);
   const [content, setContent] = useState(() => post.content);
+  useApplyCommentMarkerConnection();
   const updatePostMutation = useUpdatePostMutation();
 
   useDebounce(
@@ -26,40 +22,6 @@ export const Editor = ({ post, className }: Props): ReactElement => {
     1000,
     [title, content]
   );
-
-  useEffect(() => {
-    getAllCommentEls()?.forEach((comment) => {
-      comment.classList.remove("!bg-red-500/50");
-    });
-
-    if (selectedComment) {
-      getSelectedCommentEl(selectedComment.id)?.classList.add("!bg-red-500/50");
-    }
-  }, [post, selectedComment]);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    const onMouseEnter = (commentEl: Element) => () => {
-      const commentId = commentEl.getAttribute("data-comment-id");
-      if (commentId) {
-        selectComment(commentId);
-      }
-    };
-
-    const onMouseLeave = () => {
-      selectComment(null);
-    };
-
-    getAllCommentEls().forEach((comment) => {
-      comment.addEventListener("mouseenter", onMouseEnter(comment), { signal: abortController.signal });
-      comment.addEventListener("mouseleave", onMouseLeave, { signal: abortController.signal });
-    });
-
-    return () => {
-      abortController.abort();
-    };
-  }, [selectComment]);
 
   return (
     <div className={`flex flex-col space-y-3 items-center ${className}`}>

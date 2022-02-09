@@ -3,8 +3,7 @@ fragment Post on Post {
   title
   content
   author {
-    id
-    username
+   ...Author
   }
   comments {
     ...Comment

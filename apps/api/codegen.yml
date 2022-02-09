@@ -8,3 +8,5 @@ generates:
         AWSDateTime: string
     plugins:
       - typescript
+      - add:
+          content: '/* eslint-disable */'

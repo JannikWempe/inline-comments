@@ -1,7 +1,7 @@
 import { API as AmplifyAPI, graphqlOperation } from "aws-amplify";
 import { GRAPHQL_AUTH_MODE, GraphQLResult } from "@aws-amplify/api/lib/types";
 
-export function amplifyFetcher<TData, TVariables>(query: string, variables?: TVariables) {
+export const amplifyFetcher = <TData, TVariables>(query: string, variables?: TVariables) => {
   return async (): Promise<TData> => {
     const response = (await AmplifyAPI.graphql({
       authMode: GRAPHQL_AUTH_MODE.API_KEY,
@@ -9,4 +9,4 @@ export function amplifyFetcher<TData, TVariables>(query: string, variables?: TVa
     })) as GraphQLResult<any>;
     return response.data;
   };
-}
+};
