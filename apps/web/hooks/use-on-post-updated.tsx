@@ -9,8 +9,9 @@ type Props = {
   onPostUpdatedError?: (error: unknown) => void;
 };
 
-const isObservable = <T>(maybeObservable: unknown): maybeObservable is Observable<T> =>
-  typeof maybeObservable === "object" && typeof (maybeObservable as Observable<T>).subscribe === "function";
+function isObservable<T>(maybeObservable: unknown): maybeObservable is Observable<T> {
+  return typeof maybeObservable === "object" && typeof (maybeObservable as Observable<T>).subscribe === "function";
+}
 
 function assertIsObservable<T>(maybeObservable: unknown): asserts maybeObservable is Observable<T> {
   if (!isObservable(maybeObservable)) this.error(`Expected an Observable, but got ${typeof maybeObservable}`);
