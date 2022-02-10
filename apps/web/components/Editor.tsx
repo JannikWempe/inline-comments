@@ -12,9 +12,10 @@ type Props = {
 
 export const Editor = React.memo(
   ({ post, className }: Props): ReactElement => {
-    const [title, setTitle] = useState(() => post.title);
-    const [content, setContent] = useState(() => post.content);
     useApplyCommentMarkerConnection();
+    const [title, setTitle] = useState(post.title);
+    const [content, setContent] = useState(post.content);
+
     const queryClient = useQueryClient();
     const updatePostMutation = useUpdatePostMutation({
       onSuccess: () => {
@@ -48,6 +49,7 @@ export const Editor = React.memo(
           onInput={(e) => {
             setContent(e.currentTarget.innerHTML);
           }}
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>

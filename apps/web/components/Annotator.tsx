@@ -29,8 +29,9 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { setIsAddingNewComment } = usePost();
   const [menuPosition, setMenuPosition] = useState<Point | null>(null);
-  const contentRef = useRef<HTMLPreElement>(null);
 
+  const contentRef = useRef<HTMLPreElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const rangeRef = useRef<Range | null>(null);
   const createdHighlight = useRef<HTMLElement | null>(null);
 
@@ -50,14 +51,15 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
     }
     rangeRef.current = range;
 
-    const rect = range.getBoundingClientRect();
+    const rangeRect = range.getBoundingClientRect();
+    const wrapperRect = wrapperRef.current!.getBoundingClientRect();
 
     const buttonWidth = 20;
     const buttonHeight = 20;
     const lineHeight = 15;
     setMenuPosition({
-      x: rect.x + rect.width / 2 - buttonWidth - 80,
-      y: rect.y - 2 * buttonHeight - lineHeight - 17,
+      x: rangeRect.x + rangeRect.width / 2 - buttonWidth - wrapperRect.x,
+      y: rangeRect.y - 2 * buttonHeight - lineHeight - wrapperRect.y,
     });
   };
 
@@ -92,14 +94,13 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
   };
 
   const onDoneCommenting = () => {
-    // contentRef.current.innerHTML = data.addComment.post.content;
     createdHighlight.current = null;
     setIsAddingNewComment(false);
     onClose();
   };
 
   return (
-    <div className={`flex flex-col space-y-3 items-center ${className}`}>
+    <div ref={wrapperRef} className={`relative flex flex-col space-y-3 items-center ${className}`}>
       <input
         type="text"
         value={post.title}
@@ -111,6 +112,7 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
         className="highlight-comments relative w-full p-2 whitespace-pre-wrap rounded-lg border-solid border-2 border-gray-100 selection:bg-blue-500/20"
         onMouseUp={handleMouseUp}
         ref={contentRef}
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: post.content }}
         data-testid="annotator-content"
       />
