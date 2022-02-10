@@ -3,6 +3,7 @@ import { Spinner } from "ui";
 import { useQueryClient } from "react-query";
 import { TrashIcon } from "ui/icons/TrashIcon";
 import { CheckIcon } from "ui/icons/CheckIcon";
+import { useRouter } from "next/router";
 import {
   CommentFragment,
   useAddCommentResponseMutation,
@@ -21,6 +22,9 @@ type Props = {
 };
 
 export const Comment = ({ comment, isSelected, selectComment, deselectComment }: Props): ReactElement => {
+  const router = useRouter();
+  // FIXME: This is for demo purposes only.
+  const authorId = (router.query.author ?? "24XoFTnzIcPSibhQjWvsziTw2Hh") as string;
   const [newResponse, setNewResponse] = useState("");
   const [showResponses, setShowResponses] = useState(false);
   const [showResponseForm, setShowResponseForm] = useState(false);
@@ -44,7 +48,7 @@ export const Comment = ({ comment, isSelected, selectComment, deselectComment }:
     addCommentMutation.mutate({
       input: {
         commentId: comment.id,
-        authorId: "24XoFTnzIcPSibhQjWvsziTw2Hh",
+        authorId,
         content: newResponse,
       },
     });

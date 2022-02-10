@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import { Button, Input } from "ui";
 import { useQueryClient } from "react-query";
+import { useRouter } from "next/router";
 import { dateTimeFormat } from "../lib/date";
 import { PostFragment, useAddCommentMutation, usePostQuery } from "../lib/api/api.generated";
 
@@ -15,6 +16,9 @@ type Props = {
 };
 
 export const NewComment = ({ postId, postContent, isOpen, onCancel, onDone, className }: Props) => {
+  const router = useRouter();
+  // FIXME: This is for demo purposes only.
+  const authorId = (router.query.author ?? "24XoFTnzIcPSibhQjWvsziTw2Hh") as string;
   const [comment, setComment] = useState("");
   const ref = useRef<HTMLDivElement>(null);
 
@@ -37,7 +41,7 @@ export const NewComment = ({ postId, postContent, isOpen, onCancel, onDone, clas
     addCommentMutation.mutate({
       input: {
         postId,
-        authorId: "24XoFTnzIcPSibhQjWvsziTw2Hh",
+        authorId,
         content: comment,
         postContent,
       },
@@ -49,6 +53,7 @@ export const NewComment = ({ postId, postContent, isOpen, onCancel, onDone, clas
 
   return (
     <article ref={ref} className={`p-3 bg-gray-50 rounded-md shadow ${className}`}>
+      {/* FIXME: hardcoded username is for demo purposes only */}
       <p className="font-semibold text-md">[current user]</p>
       <p className="text-xs text-gray-500">{date}</p>
       <form onSubmit={handleSubmit}>
