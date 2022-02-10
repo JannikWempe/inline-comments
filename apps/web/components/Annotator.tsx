@@ -100,42 +100,44 @@ export const Annotator = ({ post, className }: Props): ReactElement => {
   };
 
   return (
-    <div ref={wrapperRef} className={`relative flex flex-col space-y-3 items-center ${className}`}>
-      <input
-        type="text"
-        value={post.title}
-        readOnly
-        className="w-full p-2 font-semibold rounded-lg border-solid border-2 border-gray-100 focus:outline-2"
-      />
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-      <pre
-        className="highlight-comments relative w-full p-2 whitespace-pre-wrap rounded-lg border-solid border-2 border-gray-100 selection:bg-blue-500/20"
-        onMouseUp={handleMouseUp}
-        ref={contentRef}
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: post.content }}
-        data-testid="annotator-content"
-      />
+    <>
+      <div ref={wrapperRef} className={`relative flex flex-col space-y-3 items-center ${className}`}>
+        <input
+          type="text"
+          value={post.title}
+          readOnly
+          className="w-full p-2 font-semibold rounded-lg border-solid border-2 border-gray-100 focus:outline-2"
+        />
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+        <pre
+          className="highlight-comments relative w-full p-2 whitespace-pre-wrap rounded-lg border-solid border-2 border-gray-100 selection:bg-blue-500/20"
+          onMouseUp={handleMouseUp}
+          ref={contentRef}
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: post.content }}
+          data-testid="annotator-content"
+        />
+        <button
+          type="button"
+          aria-label="Add comment"
+          className={`${menuPosition ? `block absolute p-2 bg-gray-500 text-white` : "hidden"}`}
+          style={{
+            top: menuPosition ? menuPosition.y : undefined,
+            left: menuPosition?.x,
+          }}
+          onClick={handleAddComment}
+        >
+          <AnnotationIcon className="h-6 w-6" />
+        </button>
+      </div>
       <NewComment
         postId={post.id}
         postContent={contentRef.current?.innerHTML ?? ""}
         isOpen={isOpen}
         onDone={onDoneCommenting}
         onCancel={handleCancelCommenting}
-        className="absolute right-0 w-[30vw]"
+        className="absolute right-0 top-16 w-[30vw]"
       />
-      <button
-        type="button"
-        aria-label="Add comment"
-        className={`${menuPosition ? `block absolute p-2 bg-gray-500 text-white` : "hidden"}`}
-        style={{
-          top: menuPosition ? menuPosition.y : undefined,
-          left: menuPosition?.x,
-        }}
-        onClick={handleAddComment}
-      >
-        <AnnotationIcon className="h-6 w-6" />
-      </button>
-    </div>
+    </>
   );
 };
