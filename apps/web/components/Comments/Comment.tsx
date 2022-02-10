@@ -24,7 +24,7 @@ type Props = {
 export const Comment = ({ comment, isSelected, selectComment, deselectComment }: Props): ReactElement => {
   const router = useRouter();
   // FIXME: This is for demo purposes only.
-  const authorId = (router.query.author ?? "24XoFTnzIcPSibhQjWvsziTw2Hh") as string;
+  const authorId = (router?.query?.author ?? "24XoFTnzIcPSibhQjWvsziTw2Hh") as string;
   const [newResponse, setNewResponse] = useState("");
   const [showResponses, setShowResponses] = useState(false);
   const [showResponseForm, setShowResponseForm] = useState(false);

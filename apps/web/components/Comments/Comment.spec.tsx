@@ -1,6 +1,3 @@
-/**
- * @jest-environment jsdom
- */
 import React from "react";
 import { CommentFragment } from "../../lib/api/api.generated";
 import { Comment } from "./Comment";
