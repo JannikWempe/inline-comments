@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "lint": "eslint . --fix --cache"
   },
   "dependencies": {
