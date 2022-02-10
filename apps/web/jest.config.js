@@ -27,8 +27,11 @@ const TS_CONFIG_PATH = './tsconfig.json';
 const SRC_PATH = '<rootDir>';
 
 module.exports = {
+  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+  preset: 'ts-jest',
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/cypress/'],
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: makeModuleNameMapper(SRC_PATH, TS_CONFIG_PATH),
 };
