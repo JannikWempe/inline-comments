@@ -4,8 +4,12 @@ import { IntegrationTestStack } from "./integration-test-stack";
 import { AppApi } from "./lib/api";
 import { AppDatabase } from "./lib/database";
 
+interface ApiStackProps extends StackProps {
+  runIntTests?: boolean;
+}
+
 export class ApiStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props?: ApiStackProps) {
     super(scope, id, props);
 
     const database = new AppDatabase(this, "AppDatabase");
@@ -15,9 +19,11 @@ export class ApiStack extends Stack {
       commentsTable: database.commentsTable,
     });
 
-    new IntegrationTestStack(this, "IntegrationTestStack", {
-      graphqlUrl: api.api.graphqlUrl,
-      apiKey: api.api.apiKey!,
-    });
+    if (props?.runIntTests) {
+      new IntegrationTestStack(this, "IntegrationTestStack", {
+        graphqlUrl: api.api.graphqlUrl,
+        apiKey: api.api.apiKey!,
+      });
+    }
   }
 }
