@@ -9,7 +9,7 @@
     "start": "next start",
     "generate": "graphql-codegen",
     "lint": "next lint --fix --cache",
-    "test": "jest --passWithNoTests --all --updateSnapshot",
+    "test": "jest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

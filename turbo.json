@@ -6,10 +6,10 @@
       "outputs": ["dist/**", ".next/**"]
     },
     "lint": {
-      "outputs": []
+      "outputs": [".eslintcache"]
     },
     "test": {
-      "outputs": []
+      "outputs": ["__snapshots__/**"]
     },
     "typecheck": {
       "outputs": []
