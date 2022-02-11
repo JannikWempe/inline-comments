@@ -1,4 +1,4 @@
-import { CloudFormationCustomResourceEvent, CloudFormationCustomResourceResponse } from "aws-lambda";
+import type { CloudFormationCustomResourceEvent, CloudFormationCustomResourceResponse } from "aws-lambda";
 import { gql, GraphQLClient } from "graphql-request";
 
 export const handler = async (
