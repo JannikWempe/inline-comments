@@ -1,6 +1,6 @@
 import path from "path";
 import * as appsync from "@aws-cdk/aws-appsync-alpha";
-import { FieldLogLevel, Schema } from "@aws-cdk/aws-appsync-alpha";
+import { FieldLogLevel, GraphqlApi, Schema } from "@aws-cdk/aws-appsync-alpha";
 import { CfnOutput, Duration, Expiration, RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as ddb from "aws-cdk-lib/aws-dynamodb";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
@@ -14,6 +14,8 @@ interface Props {
 }
 
 export class AppApi extends Construct {
+  readonly api: GraphqlApi;
+
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
 
@@ -203,6 +205,7 @@ export class AppApi extends Construct {
     props.postsTable.grantFullAccess(resolverLambda);
     props.commentsTable.grantFullAccess(resolverLambda);
 
+    this.api = api;
     // names taken from amplify: https://docs.amplify.aws/lib/client-configuration/configuring-amplify-categories/q/platform/js/
     // FIXME: exportName doesn't keep the output json property stable
     new CfnOutput(this, "AwsAppsyncGraphqlEndpoint", {

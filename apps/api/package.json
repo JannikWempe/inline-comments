@@ -17,9 +17,9 @@
     "lint": "eslint --ext .ts,.tsx --fix --cache src"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "3.1.1",
     "@graphql-codegen/cli": "2.4.0",
     "@graphql-codegen/typescript": "2.4.2",
-    "@graphql-codegen/add": "3.1.1",
     "@types/aws-lambda": "8.10.92",
     "@types/lodash.merge": "4.6.6",
     "@types/node": "10.17.27",
@@ -42,6 +42,7 @@
     "@aws-cdk/aws-appsync-alpha": "2.10.0-alpha.0",
     "aws-cdk-lib": "2.10.0",
     "constructs": "^10.0.0",
+    "graphql-request": "4.0.0",
     "ksuid": "3.0.0",
     "lodash.merge": "4.6.2",
     "source-map-support": "^0.5.16"
